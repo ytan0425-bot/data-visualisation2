@@ -608,22 +608,37 @@ const spec5 = {
 };
 const spec6 = {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
   "title": {
     "text": "Population Density vs Road Density by State",
     "fontSize": 20
   },
+
   "width": 750,
   "height": 500,
+
   "data": {
     "url": "https://raw.githubusercontent.com/ytan0425-bot/transport-dashboard/refs/heads/main/chart7_road_length.csv"
   },
+
   "transform": [
     {
       "calculate": "datum.population / datum.area_km2",
       "as": "population_density"
     }
   ],
+
   "params": [
+    {
+      "name": "panzoom",
+      "select": {
+        "type": "interval",
+        "translate": "[mousedown, window:mouseup] > window:mousemove!",
+        "zoom": false
+      },
+      "bind": "scales"
+    },
+
     {
       "name": "highlight",
       "select": {
@@ -632,6 +647,7 @@ const spec6 = {
       }
     }
   ],
+
   "mark": {
     "type": "circle",
     "tooltip": true,
@@ -639,30 +655,43 @@ const spec6 = {
     "stroke": "black",
     "strokeWidth": 1
   },
+
   "encoding": {
+
     "x": {
       "field": "population_density",
       "type": "quantitative",
-      "title": "Population Density (people per km²)",
-      "scale": { "type": "log" }
+      "title": "Population Density (people per km²)"
     },
+
     "y": {
       "field": "road_density_km_per_km2",
       "type": "quantitative",
       "title": "Road Density (km per km²)",
-      "scale": { "type": "log" }
+      "scale": {
+        "domain": [0, 3]
+      },
+      "axis": {
+        "tickMinStep": 0.1,
+        "format": ".1f"
+      }
     },
+
     "size": {
       "field": "population",
       "type": "quantitative",
       "title": "Population",
-      "scale": { "range": [100, 4000] }
+      "scale": {
+        "range": [100, 4000]
+      }
     },
+
     "color": {
       "field": "state",
       "type": "nominal",
       "title": "State"
     },
+
     "opacity": {
       "condition": {
         "param": "highlight",
@@ -670,18 +699,54 @@ const spec6 = {
       },
       "value": 0.5
     },
+
     "tooltip": [
-      { "field": "state", "type": "nominal", "title": "State" },
-      { "field": "population", "type": "quantitative", "title": "Population", "format": "," },
-      { "field": "population_density", "type": "quantitative", "title": "Population Density (per km²)", "format": ".2f" },
-      { "field": "total_road_length_km", "type": "quantitative", "title": "Total Road Length (km)", "format": "," },
-      { "field": "road_density_km_per_km2", "type": "quantitative", "title": "Road Density (km/km²)", "format": ".3f" }
+      {
+        "field": "state",
+        "type": "nominal",
+        "title": "State"
+      },
+      {
+        "field": "population",
+        "type": "quantitative",
+        "title": "Population",
+        "format": ","
+      },
+      {
+        "field": "population_density",
+        "type": "quantitative",
+        "title": "Population Density (per km²)",
+        "format": ".2f"
+      },
+      {
+        "field": "total_road_length_km",
+        "type": "quantitative",
+        "title": "Total Road Length (km)",
+        "format": ","
+      },
+      {
+        "field": "road_density_km_per_km2",
+        "type": "quantitative",
+        "title": "Road Density (km/km²)",
+        "format": ".3f"
+      }
     ]
   },
+
   "config": {
-    "view": { "stroke": "transparent" },
-    "axis": { "labelFontSize": 12, "titleFontSize": 14 },
-    "legend": { "labelFontSize": 12, "titleFontSize": 13 }
+    "view": {
+      "stroke": "transparent"
+    },
+
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 14
+    },
+
+    "legend": {
+      "labelFontSize": 12,
+      "titleFontSize": 13
+    }
   }
 };
 const spec7 = {
